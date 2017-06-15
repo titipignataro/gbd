@@ -8,7 +8,7 @@ typedef struct{
 
 typedef struct{
     bloco* blocos_disco; // VETOR PRA GUARDAR CADA BLOCO
-    int controle;
+    int controle; //INDICA QUANTOS BLOCOS ESTAO LIVRES
 } ged;
 
 ged inicializa_ged(int num_blocos); // Inicializa GED, alocando 'num_blocos' blocos

@@ -3,6 +3,15 @@
 #include "ga.h"
 #include "gbp.h"
 
+int inicializa_ga(diretorio_arquivos diretorio){
+    int i;
+    for(i=0;i<5;i++){
+        diretorio.tabelas[i].arquivo_id = -1;
+        diretorio.tabelas[i].header = NULL;
+    }
+    return 1;
+}
+
 ged inicializa_ged(int num_blocos) // Inicializa GED, alocando 'num_blocos' blocos e vetor auxiliar de blocos
 {
     ged gerenciador_disco;
@@ -26,46 +35,52 @@ return slot;
 // ANOTACAO:A funcao cria_registro só insere na pagina. inserir_registro corresponde á operacao toda de insercao do registro.
 
 int aloca_bloco(ged gerenciador_disco){
-int num_blocos;
-num_blocos = gerenciador_disco.controle;
-int i;
-i = 0;
+    int num_blocos = gerenciador_disco.controle;
+    int i = 0;
 
-while(i <= num_blocos && gerenciador_disco.blocos_disco[i].livre != 12){
-    i ++; // PROCURANDO BLOCO INTEIRAMENTE LIVRE ( Livre = 12 )
-}
-if(i > num_blocos){
-    return -1; // NENHUM BLOCO INTEIRAMENTE LIVRE FOI ENCONTRADO
-}
-else {
-    return i; // BLOCO LIVRE ENCONTRADO COM ENDERECO i
-}
+    while(i <= num_blocos && gerenciador_disco.blocos_disco[i].livre != 12){
+        i ++; // PROCURANDO BLOCO INTEIRAMENTE LIVRE ( Livre = 12 )
+    }
+    if(i > num_blocos){
+        return -1; // NENHUM BLOCO INTEIRAMENTE LIVRE FOI ENCONTRADO
+    }
+    else {
+        return i; // BLOCO LIVRE ENCONTRADO COM ENDERECO i
+    }
 }
 
 
 // FUNCOES EM CONSTRUCAO
 
 
-int cria_diretorio(int id_bloco,diretorio_arquivos diretorio){
-int
-diretorio.tabelas[0].
-
-
-
+int cria_diretorio(int arquivo_id,diretorio_arquivos diretorio_arquivos,int id_bloco){
+    int i = 0;
+    while(i < 5 && diretorio.tabelas[i].arquivo_id != -1){
+        i ++; // PROCURANDO LINHA_TABELA LIVRE PARA SER CRIADA UMA NOVA TABELA
+    }
+    if(i >= 5){
+        printf("\nNão foi possivel criar uma nova tabela pois a tabela de diretorios esta cheia!\n");
+    }else{
+        diretorio_blocos nova_entrada;
+        nova_entrada.espaco_livre = 12;
+        nova_entrada.id_bloco = id_bloco;
+        diretorio.tabelas[i].arquivo_id = arquivo_id;
+        diretorio.tabelas[i].header = nova_entrada;
+    }
 
 }
 
-int criar_tabela(char*tabela,ged gerenciador_disco,diretorio_arquivos diretorio){
-int addr_bloco_diretorio;
+int criar_tabela(int tabela,ged gerenciador_disco,diretorio_arquivos diretorio){
+    int addr_bloco_diretorio;
 
-addr_bloco_diretorio = aloca_bloco(gerenciador_disco);
-if (addr_bloco_diretorio == -1){
-    printf("Erro ao criar tabela\n Blocos ocupados!\n");
-    return -1;
-}else{
-cria_diretorio(addr_bloco_diretorio,diretorio);
-    return 1;
-}
+    addr_bloco_diretorio = aloca_bloco(gerenciador_disco);
+    if (addr_bloco_diretorio == -1){
+        printf("Erro ao criar tabela\n Blocos ocupados!\n");
+        return -1;
+    }else{
+        cria_diretorio(tabela,diretorio,addr_bloco_diretorio);
+        return 1;
+    }
 
 }
 
