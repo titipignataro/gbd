@@ -1,25 +1,28 @@
 
-typedef struct{
+typedef struct Diretorio_blocos{
     int espaco_livre;
-    int id_bloco;
+    int id_bloco; // addr_bloco
+    struct Diretorio_blocos*prox;
 }diretorio_blocos;
 
 typedef struct{
-    int arquivo_id; //usa pra que ??
-    diretorio_blocos* header;
+    int arquivo_id;
+    diretorio_blocos*header; //  //VAI SER UMA LISTA AO INVES DE VETOR, PORQUE VETOR É ESTATICO E LISTA PODE AUMENTAR O TAMANHO
 }linha_tabela;
 
 typedef struct{
     linha_tabela tabelas[5];
-}diretorio_arquivos;
+}ga;
 
 //FUNÇÕES
 
-int inicializa_ga(diretorio_arquivos diretorio); //INICIALIZA GA COLOCANDO ARQUIVO_ID=-1 E HEADER=NULL;
+//int inicializa_ga(int num_tabelas); //Inicializa diretorio de arquivos e ja define um numero maximo de tabelas que pode haver
 
-int criar_tabela(int tabela,ged gerenciador_disco); //Criar uma nova tabela e chama 'cria_diretorio' para alocar um espaço no diretorio_arquivos para essa nova tabela(arquivo)
+ga inicializa_ga(ga diretorio);
 
-int cria_diretorio(int arquivo_id,diretorio_arquivos diretorio_arquivos,int id_bloco, diretorio_blocos diretorio_blocos); // Responsável por alocar um espaço no diretorio de arquivos (recebe um arquivo id e um id_bloco proveniente do GED(funcao aloca bloco) para ser a header page) e retornar o endereço da tabela nova
+int criar_tabela(int tabela,ged*gerenciador_disco,ga*gerenciador_arquivo); //Criar uma nova tabela e chama 'cria_diretorio' para alocar um espaço no diretorio_arquivos para essa nova tabela(arquivo)
+
+int cria_diretorio(int arquivo_id,ga*diretorio); // Responsável por alocar um espaço no diretorio de arquivos (recebe um arquivo id e um id_bloco proveniente do GED(funcao aloca bloco) para ser a header page) e retornar o endereço da tabela nova
 
 int checar_espaco_blocos(int arquivo_id, int espaco_necessario); //Reponsável por checar se existe bloco com espaço livre (do tamanho do espaco necessario ou menor), e se sim, verificar se o bloco ja esta carregado na memoria, se nao, carregar.
 
